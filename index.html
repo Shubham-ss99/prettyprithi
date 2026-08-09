@@ -928,7 +928,7 @@ footer.thanks p{
     </div>
   </section>
   <!--<audio src="khat.mp3" autoplay></audio>-->
-  <audio src="khat.mp3" autoplay="autoplay" loop="loop"></audio>
+  <audio id="bgAudio" src="khat.mp3" loop></audio>
 
   <!-- =======================================================
        6. PARALLAX SPLIT (photo + details)
@@ -1420,6 +1420,28 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
   spawnPetals(document.getElementById('hero'), 10);
   spawnPetals(document.querySelector('.proposal'), 10);
 }
+
+// Function to attempt playing the audio
+  function playAudio() {
+    const audio = document.getElementById("bgAudio");
+    audio.play()
+      .then(() => {
+        // Success: Audio started playing with sound
+        console.log("Audio playing successfully.");
+        // Remove the event listener so it doesn't trigger again
+        document.removeEventListener('click', playAudio);
+      })
+      .catch(error => {
+        // Autoplay was blocked by the browser
+        console.log("Autoplay blocked. Waiting for user interaction.", error);
+      });
+  }
+
+  // Try to play immediately on page load
+  window.addEventListener('DOMContentLoaded', playAudio);
+
+  // Fallback: Play sound as soon as the user clicks anywhere on the page
+  document.addEventListener('click', playAudio);
 </script>
 </body>
 </html>
